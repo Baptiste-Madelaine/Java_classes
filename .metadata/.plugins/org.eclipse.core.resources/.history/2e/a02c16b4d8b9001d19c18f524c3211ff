@@ -1,0 +1,13 @@
+package exercice1;
+
+import java.util.ArrayList;
+
+public class TestExceptions {
+
+	private ArrayList<PaquetCartes> liste;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		liste = new ArrayList<>();
+	}
+
+}

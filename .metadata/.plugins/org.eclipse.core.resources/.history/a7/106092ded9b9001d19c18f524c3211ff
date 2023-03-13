@@ -1,0 +1,20 @@
+package exercice1;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class TestExceptions {
+
+	private static PaquetCartes paquet;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		paquet = new PaquetCartes(52);
+		paquet.ajouter(null);
+		while(!paquet.estPaquetVide()) {
+			System.out.println("Tu retires combien ?");
+			
+		}
+	}
+
+}

@@ -1,0 +1,13 @@
+package exercice;
+
+import exercice.Test;
+
+public class Test {
+	public static void main(String[] args) {
+		Test t = new Test();
+		t.afficherMessage("Echec");
+	}
+	public void afficherMessage(String message) {
+		System.out.println(message);
+	}
+}

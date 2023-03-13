@@ -1,0 +1,12 @@
+INDEX VERSION 1.131+\\calebasse\21809935\Documents\BUT\Java\.metadata\.plugins\org.eclipse.jdt.core
+656568349.index
+2148259589.index
+1865797976.index
+3405678978.index
+3190497703.index
+3885593020.index
+1011562593.index
+457455846.index
+3460420904.index
+1344618635.index
+4139564615.index

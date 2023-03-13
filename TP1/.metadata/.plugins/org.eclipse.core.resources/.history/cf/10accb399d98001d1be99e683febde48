@@ -1,0 +1,23 @@
+package exercice;
+
+import exercice.TestPositif;
+
+public class TestPositif {
+	public static int numeroTest1;
+	public void testerPositif(int n) {
+		if( 0 <= n) {
+			this.afficherMessage("succes");
+		}else {
+			this.afficherMessage("echec");
+		}
+	}
+	public void afficherMessage(String message) {
+		System.out.println(message);
+	}
+	public static void main(String[] args) {
+		TestPositif t = new TestPositif();
+		t.testerPositif(10);
+		t.testerPositif(-10);
+	}
+	
+}

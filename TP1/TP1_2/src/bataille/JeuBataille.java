@@ -1,0 +1,189 @@
+package bataille;
+
+import fr.unicaen.iutgon.info.carte.*;
+
+public class JeuBataille {
+
+    /**
+     * La classe JeuBataille dispose d'un constructeur et d'une méthode jouer()
+     */
+    private PaquetCartes p;
+    private Joueur joueur1, joueur2;
+    private int turn = 0; 
+    public int it1;
+    public int it2;
+    /**
+     * le constructeur crée  un jeu de  32 cartes et 2 joueurs.
+     * @param nom1  nom du joueur 1
+     * @param nom2  nom du joueur 2
+     */
+    public JeuBataille(String nom1, String nom2) {
+        joueur1 = new Joueur(nom1);
+        joueur2 = new Joueur(nom2);
+        
+        p = new PaquetCartes();
+        for(int i = 7; i <= 14; i++) {
+			for(int j = 0; j <=3; j++) {
+				Carte c = new Carte(i,j);
+				p.ajouter(c);
+			}
+		}
+    }
+
+    @Override
+    public String toString() {
+        return  p.toString();
+    }
+
+    /**
+     *
+     *  Un tour de jeu :
+     *      Chaque joueur tire la carte du dessus de son jeu.
+     *      Le joueur qui a la carte de plus grand hauteur gagne le tour et met les deux cartes en dessous
+     *      de son paquet.
+     *      Si les deux cartes sont identiques, on fait une bataille :
+     *          Chaque joueur tire 2 cartes du dessus de son paquet.
+     *          on compare la premiere carte de chaque joueur de ce second tirage.
+     *          Le joueur qui a la carte la plus haute ramasse toutes les cartes et les met en dessous de son paquet
+     *          En cas d'égalité, chacun joueur ramasse ses cartes et les met en dessous de son paquet.
+     *
+     * @return null dans le cas d'un tour normal, la reference joueur vainqueur si un des joueurs ne peut pas jouer.
+     *
+     */
+
+    public Joueur jouer1Tour(){
+    	Carte j1;
+    	Carte j2;
+    	if(joueur1.nbCartesRestantes()>0) {
+    		j1 = joueur1.prendreCarteDessus();
+    	}else {
+    		return joueur2;
+    	}
+    	if(joueur2.nbCartesRestantes()>0) {
+    		j2 = joueur2.prendreCarteDessus();
+    	}else {
+    		return joueur1;
+    	}
+    	if(j1.getHauteur() < j2.getHauteur()) {joueur2.mettreSousLePaquet(j1);joueur2.mettreSousLePaquet(j2);}
+    	else if(j1.getHauteur() > j2.getHauteur()) {joueur1.mettreSousLePaquet(j1);joueur1.mettreSousLePaquet(j2);}
+    	else if(j1.getHauteur() == j2.getHauteur()) {joueur1.mettreSousLePaquet(j1);joueur2.mettreSousLePaquet(j2);}
+    	return null;
+    	
+        //TODO: instructions à écrire
+    	
+    }
+
+    /**
+     * permet de jouer une partie de bataille.
+     * La méthode effectue le traitement suivant :
+     *  - mélange des cartes
+     *  - distribution des cartes entre les deux joueurs
+     *  - lance au maximum 100 tours de jeu.
+     *
+     *  le jeu s'arrete lorsque
+     *      - un joueur n'a plus de carte, l'autre joueur est déclaré vainqueur.
+     *      - 100 tours ont été joues. Le joueur qui a le plus de cartes est déclare vainqueur, sinon egalite
+     *
+     *
+     */
+    public void jouer() {
+        // mélanger le jeu
+       p.melanger();
+       //TODO: instructions à écrire
+
+        // distribution des cartes
+       while(!p.estPaquetVide()) {
+    	   if(turn == 0) {
+    		   joueur1.mettreSousLePaquet(p.tirerCarteDessus());
+    		   turn = 1;
+    	   }else {
+    		   joueur2.mettreSousLePaquet(p.tirerCarteDessus());
+    		   turn = 0;
+    	   }
+       }
+		for(int i = 0; i < 100; i++) {
+			if(jouer1Tour() == null) {
+				System.out.println(joueur1.getNom() +" : "+ joueur1.nbCartesRestantes() +" " +joueur2.getNom() +" : "+ joueur2.nbCartesRestantes());
+			}
+		}
+    	
+       
+    }
+    private void tirage(int x, Joueur p, Carte[] tab) {
+    	for(int i = 0; i < x; i++) {
+    		tab[i] = p.prendreCarteDessus();
+    	}
+    }
+    private Carte[][] tirencarte() {
+    	Carte[][] li_li = new Carte[2][2]; 
+    	if(joueur1.nbCartesRestantes()<2) {
+    		Carte[] li_j1 = new Carte[joueur1.nbCartesRestantes()];
+    		tirage(joueur1.nbCartesRestantes(), joueur1, li_j1);
+    		li_li[0]=li_j1;
+    		it1 = joueur1.nbCartesRestantes();
+    	}else {
+    		Carte[] li_j1 = new Carte[2];
+    		tirage(2, joueur1, li_j1);
+    		li_li[0]=li_j1;
+    		it1 = 2;
+    	}
+    	if(joueur2.nbCartesRestantes()<2) {
+    		Carte[] li_j2 = new Carte[joueur2.nbCartesRestantes()];
+    		tirage(joueur2.nbCartesRestantes(), joueur2, li_j2);
+    		li_li[1]=li_j2;
+    		it2 = joueur2.nbCartesRestantes();
+    	}else {
+    		Carte[] li_j2 = new Carte[2];
+    		tirage(2, joueur2, li_j2);
+    		li_li[1]=li_j2;
+    		it2 = 2;
+    	}
+    	return li_li;
+    }
+    private void gagnant(int i, Carte[][] tab) {
+    	if(i == 1) {
+    		for(int x = 0; x < 2; x++) {
+    			for(Carte c : tab[x]) {
+    				joueur1.mettreSousLePaquet(c);
+    			}
+    		}
+    	}else {
+    		for(int x = 0; x < 2; x++) {
+    			for(Carte c : tab[x]) {
+    				joueur2.mettreSousLePaquet(c);
+    			}
+    		}
+    	}
+    }
+    private Joueur jouer1tour() {
+    	
+    	Carte j1;
+    	Carte j2;
+    	if(joueur1.nbCartesRestantes()>0) {
+    		j1 = joueur1.prendreCarteDessus();
+    	}else {
+    		return joueur2;
+    	}
+    	if(joueur2.nbCartesRestantes()>0) {
+    		j2 = joueur2.prendreCarteDessus();
+    	}else {
+    		return joueur1;
+    	}
+    	if(j1.getHauteur() < j2.getHauteur()) {joueur2.mettreSousLePaquet(j1);joueur2.mettreSousLePaquet(j2);}
+    	else if(j1.getHauteur() > j2.getHauteur()) {joueur1.mettreSousLePaquet(j1);joueur1.mettreSousLePaquet(j2);}
+    	else if(j1.getHauteur() == j2.getHauteur()) {
+    		Carte[][] res = tirencarte();
+    		if(res[0][it1].getHauteur() > res[1][it2].getHauteur()) {
+    			gagnant(1, res);
+    		}else if(res[0][it1].getHauteur() < res[1][it2].getHauteur()) {
+    			gagnant(2,res);
+    		}
+    	}
+    	return null;
+    }
+    public static void main(String[] args) {
+		JeuBataille oui = new JeuBataille("Jean", "Hugues");
+		oui.jouer();
+		
+	}
+}

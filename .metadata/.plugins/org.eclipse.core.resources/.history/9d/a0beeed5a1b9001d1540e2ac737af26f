@@ -1,0 +1,78 @@
+package Exercice1;
+
+import java.util.ArrayList;
+import java.util.ListIterator;
+import java.util.Random;
+
+public class TesteCollections {
+
+	private static ArrayList<Double> liDouble = new ArrayList<>();
+	private static Random r = new Random(); 
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		double t = System.currentTimeMillis();
+		remplirD();
+		System.out.println("Remplir au début "+(System.currentTimeMillis()-t) + " ms");
+		liDouble.clear();
+		t = System.currentTimeMillis();
+		remplirF();
+		System.out.println("Remplir à la fin "+(System.currentTimeMillis()-t) + " ms");
+		t = System.currentTimeMillis();
+		searchR();
+		System.out.println("Recherche avec indice "+(System.currentTimeMillis()-t) + " ms");
+		t = System.currentTimeMillis();
+		searchV();
+		System.out.println("Recherche avec contains "+(System.currentTimeMillis()-t) + " ms");
+		t = System.currentTimeMillis();
+		parcourExpli();
+		System.out.println("Parcour explicite "+(System.currentTimeMillis()-t) + " ms");
+		t = System.currentTimeMillis();
+		parcourIte();
+		System.out.println("Parcour avec iteration "+(System.currentTimeMillis()-t) + " ms");
+		t = System.currentTimeMillis();
+		parcourListIte();
+		System.out.println("Parcour avec Liste iteration "+(System.currentTimeMillis()-t) + " ms");
+	}
+	private static void remplirD() {
+		for(int i = 0; i <10000; i++) {
+			liDouble.add(0,r.nextDouble());
+		}
+	}
+	private static void remplirF() {
+		for(int i = 0; i < 10000; i++) {
+			liDouble.add(r.nextDouble());
+		}
+	}
+	private static void searchR() {
+		for(int i = 0; i < 10000; i++) {
+			liDouble.get(r.nextInt(10000));
+		}
+	}
+	private static void searchV() {
+		for(int i = 0; i < 10000; i++) {
+			liDouble.contains(r.nextDouble());
+		}
+	}
+	private static void parcourExpli() {
+		for(int i =0; i < 10000; i++) {
+			liDouble.get(i);
+		}
+	}
+	private static void parcourIte() {
+		for(int i = 0; i < 10000; i++) {
+			liDouble.iterator().next();
+		}
+	}
+	private static void parcourListIte() {
+		ListIterator<Double> itr = liDouble.listIterator();
+		while(itr.hasNext()) {
+			itr.next();
+		}
+	}
+	private static void affichIte() {
+		for(int i = 0; i < 10; i++) {
+			System.out.println(liDouble.get(i));
+		}
+	}
+
+}
